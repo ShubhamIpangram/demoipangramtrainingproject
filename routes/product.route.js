@@ -17,5 +17,7 @@ router.route('/productList2019priceBetween500to1000')
 router.route('/categoryWiseProductList2020')
     .get(productCtrl.categoryWiseProductList2020);
 
+router.route('/desendingOrderProductListcategoryWise2020')
+    .get(productCtrl.desendingcategoryWiseProductList2020)
 
 module.exports = router;

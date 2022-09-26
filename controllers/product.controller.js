@@ -205,20 +205,54 @@ exports.categoryWiseProductList2020 = async (req, res, next) => {
                         $expr: {
                             $eq: [2020, { $year: "$launchedDate" }]
                         },
-                        categoryId: ObjectId("632ebc0ce833e72d7653156d")
+                        categoryId: ObjectId("632ebc0ce833e72d7653156d"),
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'category',
+                        localField: 'categoryId',
+                        foreignField: '_id',
+                        as: 'Category'
                     },
 
                 },
+                { $count: "totalProduct" }
+            ]
+        ).toArray();
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
 
-                // {
-                //     $lookup: {
-                //         from: 'category',
-                //         localField: 'categoryId',
-                //         foreignField: '_id',
-                //         as: 'Category'
-                //     }
-                // },
-                //{ $group: { _id: null, sum: { $sum: "$price" } } }
+
+exports.desendingcategoryWiseProductList2020 = async (req, res, next) => {
+    try {
+        const result = await productColl.aggregate(
+            [
+                {
+                    $match: {
+                        $expr: {
+                            $eq: [2020, { $year: "$launchedDate" }]
+                        },
+                        categoryId: ObjectId("632ebcc3e833e72d7653156e"),
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'category',
+                        localField: 'categoryId',
+                        foreignField: '_id',
+                        as: 'Category'
+                    },
+
+                },
+                { $sort: { _id: -1 } }
             ]
         ).toArray();
         const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
