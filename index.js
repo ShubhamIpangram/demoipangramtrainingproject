@@ -34,7 +34,6 @@ db.connection().then((database) => {
 
     app.use('/api/product', require('./routes/product.route'));
 
-
     app.use((err, req, res, next) => {
         if (err instanceof expressValidation.ValidationError) {
             console.log(err)

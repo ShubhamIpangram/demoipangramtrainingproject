@@ -210,14 +210,15 @@ exports.categoryWiseProductList2020 = async (req, res, next) => {
 
                 },
 
-                {
-                    $lookup: {
-                        from: 'category',
-                        localField: 'categoryId',
-                        foreignField: '_id',
-                        as: 'Category'
-                    }
-                },
+                // {
+                //     $lookup: {
+                //         from: 'category',
+                //         localField: 'categoryId',
+                //         foreignField: '_id',
+                //         as: 'Category'
+                //     }
+                // },
+                //{ $group: { _id: null, sum: { $sum: "$price" } } }
             ]
         ).toArray();
         const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
