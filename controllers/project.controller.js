@@ -586,7 +586,7 @@ exports.geoSpatialQuery = async (req, res, next) => {
 
 exports.geoLocationWithPolygon = async (req, res, next) => {
     try {
-        
+
         var METERS_PER_MILE = 1609.34
         const result = await projectColl.find(
             {

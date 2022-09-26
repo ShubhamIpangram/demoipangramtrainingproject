@@ -90,7 +90,6 @@ exports.productList2016and2022 = async (req, res, next) => {
 
         const result = await productColl.aggregate(
             [
-
                 {
                     $match: {
                         $expr: {
@@ -172,7 +171,6 @@ exports.productList2019priceBetween500to1000 = async (req, res, next) => {
                             ]
                         }
                     },
-
                 },
                 {
                     $lookup: {
