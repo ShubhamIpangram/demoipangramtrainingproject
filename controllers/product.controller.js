@@ -162,15 +162,15 @@ exports.productList2019priceBetween500to1000 = async (req, res, next) => {
     try {
         const result = await productColl.aggregate(
             [
-
                 {
                     $match: {
                         $expr: {
-                            $eq: [2019, { $year: "$launchedDate" }]
-                        },
-                        // $and: [
-                        //     { $lte: { "$price": 500 } },
-                        //     { $gte: { "$price": 1000 } }]
+                            $and: [
+                                { $eq: [2019, { $year: "$launchedDate" }] },
+                                { $gte: ["$price", 500] },
+                                { $lte: ["$price", 1000] },
+                            ]
+                        }
                     },
 
                 },

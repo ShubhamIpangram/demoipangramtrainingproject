@@ -8,7 +8,7 @@ router.route('/createProduct')
 router.route('/productListLaunchedDate2019and2022')
     .get(productCtrl.productList2016and2022);
 
-router.route('/productListBetween2017and2021')
+router.route('/productListBetween2017to2021')
     .get(productCtrl.productListBetween2017and2021);
 
 router.route('/productList2019priceBetween500to1000')
