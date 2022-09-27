@@ -23,4 +23,11 @@ router.route('/desendingOrderProductListcategoryWise2020')
 router.route('/productListSortAndCount')
     .get(productCtrl.productListSortAndCount)
 
+router.route('/HouseHoldandComputerAccessoriesProductList')
+    .get(productCtrl.filterProductDetails)
+
+router.route('/ElectronicandFashionProductList')
+    .get(productCtrl.ElectronicandFashionProductList)
+
+
 module.exports = router;

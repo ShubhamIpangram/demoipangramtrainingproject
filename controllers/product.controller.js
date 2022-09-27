@@ -302,3 +302,82 @@ exports.productListSortAndCount = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+exports.filterProductDetails = async (req, res, next) => {
+    try {
+        const result = await productColl.aggregate(
+            [
+                {
+                    $match: {
+                        $expr: {
+                            $eq: [2020, { $year: "$launchedDate" }]
+                        },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "category",
+                        let: { gid: "$categoryId" },
+                        pipeline: [
+                            { $match: { name: "House hold and Computer accessories" } }
+                        ],
+                        "as": "Category"
+                    }
+                },
+                {
+                    $facet: {
+                        product: [{ $count: "totalProduct" }],
+                        productList: [{ $limit: 10 }]
+                    }
+                },
+                { $sort: { _id: -1 } },
+            ]
+        ).toArray();
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+exports.ElectronicandFashionProductList = async (req, res, next) => {
+    try {
+        const result = await productColl.aggregate(
+            [
+                {
+                    $match: {
+                        $expr: {
+                            $eq: [2020, { $year: "$launchedDate" }]
+                        },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "category",
+                        let: { gid: "$categoryId" },
+                        pipeline: [
+                            { $match: { name: "Electronic and Fashion" } }
+                        ],
+                        "as": "Category"
+                    }
+                },
+                {
+                    $facet: {
+                        product: [{ $count: "totalProduct" }],
+                        productList: [{ $limit: 20 }]
+                    }
+                },
+            ]
+        ).toArray();
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
