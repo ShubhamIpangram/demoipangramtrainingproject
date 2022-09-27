@@ -367,8 +367,34 @@ exports.ElectronicandFashionProductList = async (req, res, next) => {
                 {
                     $facet: {
                         product: [{ $count: "totalProduct" }],
-                        productList: [{ $limit: 20 }]
+                        productList: [{ $limit: 35 }]
                     }
+                },
+            ]
+        ).toArray();
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+exports.productListUnder500 = async (req, res, next) => {
+    try {
+        const result = await productColl.aggregate(
+            [
+                {
+                    $match: {
+                        $expr: {
+                            $and: [
+                                { $eq: [2020, { $year: "$launchedDate" }] },
+                                { $lte: ["$price", 500] },
+                            ]
+                        }
+                    },
                 },
             ]
         ).toArray();

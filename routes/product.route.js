@@ -29,5 +29,7 @@ router.route('/HouseHoldandComputerAccessoriesProductList')
 router.route('/ElectronicandFashionProductList')
     .get(productCtrl.ElectronicandFashionProductList)
 
+router.route('/productListUnder500')
+    .get(productCtrl.productListUnder500)
 
 module.exports = router;
