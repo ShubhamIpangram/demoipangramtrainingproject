@@ -20,4 +20,7 @@ router.route('/categoryWiseProductList2020')
 router.route('/desendingOrderProductListcategoryWise2020')
     .get(productCtrl.desendingcategoryWiseProductList2020)
 
+router.route('/productListSortAndCount')
+    .get(productCtrl.productListSortAndCount)
+
 module.exports = router;

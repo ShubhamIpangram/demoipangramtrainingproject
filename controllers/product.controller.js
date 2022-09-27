@@ -262,3 +262,43 @@ exports.desendingcategoryWiseProductList2020 = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+
+exports.productListSortAndCount = async (req, res, next) => {
+    try {
+        const result = await productColl.aggregate(
+            [
+                {
+                    $match: {
+                        $expr: {
+                            $eq: [2020, { $year: "$launchedDate" }]
+                        },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'category',
+                        localField: 'categoryId',
+                        foreignField: '_id',
+                        as: 'Category'
+                    },
+
+                },
+                {
+                    $facet: {
+                        product: [{ $count: "totalProduct" }],
+                        productList: [{ $limit: 10 }]
+                    }
+                },
+                { $sort: { _id: -1 } }
+            ]
+        ).toArray();
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
