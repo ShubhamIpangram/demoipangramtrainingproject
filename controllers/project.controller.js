@@ -11,6 +11,9 @@ const moment = require("moment");
 const { ObjectId } = require('mongodb');
 const salaryColl = db.collection("salary")
 const dateColl = db.collection("dateCollection")
+const itemColl = db.collection("items")
+
+
 exports.addproject = async (req, res, next) => {
     try {
         const requestdata = {
@@ -605,6 +608,61 @@ exports.geoLocationWithPolygon = async (req, res, next) => {
                     }
                 }
             }).toArray();
+        console.log('test-----', result)
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+exports.filterMongodbaggregation = async (req, res, next) => {
+    try {
+        const result = await itemColl.aggregate([
+            {
+                $project: {
+                    items: {
+                        $filter: {
+                            input: "$items",
+                            as: "item",
+                            cond: { $gte: ["$$item.price", 500] }
+                        }
+                    }
+                }
+            }
+        ]).toArray();
+        console.log('test-----', result)
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+exports.mapMongodbaggregation = async (req, res, next) => {
+    try {
+        const result = await itemColl.aggregate([
+            {
+                $project:
+                {
+                    adjustedGrades:
+                    {
+                        $map:
+                        {
+                            input: "$numbers",
+                            as: "grade",
+                            in: { $add: ["$$grade", 10] }
+                        }
+                    }
+                }
+            }
+        ]).toArray();
         console.log('test-----', result)
         const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
         return res.status(obj.code).json({

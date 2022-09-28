@@ -35,5 +35,12 @@ router.route('/geoSpatialQuery')
 router.route('/geoLocationWithPolygon')
     .get(projectCtrl.geoLocationWithPolygon);
 
+router.route('/filterMongodbaggregation')
+    .get(projectCtrl.filterMongodbaggregation);
+
+router.route('/mapMongodbaggregation')
+    .get(projectCtrl.mapMongodbaggregation);
+
+
 
 module.exports = router;
