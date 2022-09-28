@@ -407,3 +407,49 @@ exports.productListUnder500 = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+exports.totalProductPrice = async (req, res, next) => {
+    try {
+        const result = await productColl.aggregate(
+            [
+                {
+                    $match: {
+                        $expr: {
+                            $eq: [2019, { $year: "$launchedDate" }]
+                        },
+                    },
+                },
+                {
+                    $project: {
+                        "productName": 1,
+                        "price": {
+                            $sum: "$price"
+                        }
+                    }
+                }
+            ]
+        ).toArray();
+
+        const priceRes = result.map(data => {
+            return data.price
+        })
+
+        const sum = priceRes.reduce(function (x, y) {
+            return x + y;
+        }, 0);
+        console.log("total Price", sum)
+
+        const resultRes = [{
+            totalProduct: priceRes.length,
+            totalPrice: sum
+        }]
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result: resultRes }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}

@@ -32,4 +32,7 @@ router.route('/ElectronicandFashionProductList')
 router.route('/productListUnder500')
     .get(productCtrl.productListUnder500)
 
+router.route('/totalProductPrice')
+    .get(productCtrl.totalProductPrice)
+
 module.exports = router;
