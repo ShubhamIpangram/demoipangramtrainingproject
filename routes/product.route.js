@@ -35,4 +35,8 @@ router.route('/productListUnder500')
 router.route('/totalProductPrice')
     .get(productCtrl.totalProductPrice)
 
+router.route('/productListWithotSkuNumber')
+    .get(productCtrl.productListWithotSkuNumber)
+
+
 module.exports = router;

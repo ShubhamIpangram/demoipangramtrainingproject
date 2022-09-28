@@ -453,3 +453,21 @@ exports.totalProductPrice = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+
+
+exports.productListWithotSkuNumber = async (req, res, next) => {
+    try {
+        const result = await query.find(productColl);
+        result.map((el) => {
+            delete el['skuNumber']
+        })
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
