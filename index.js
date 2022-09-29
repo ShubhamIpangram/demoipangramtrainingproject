@@ -9,8 +9,10 @@ const expressValidation = require('express-validation');
 const path = require("path")
 const cors = require('cors');
 const logger = require('morgan');
-const csurf = require('csurf');
+
 const cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
+
 
 
 const port = process.env.PORT || 8001
@@ -19,19 +21,17 @@ console.log("port..", process.env.PORT);
 const app = express();
 app.use(helmet());
 
-
-const csrfMiddleware = csurf({
-    cookie: true
-});
 app.use(bodyParser.urlencoded({ limit: '15gb', extended: false }));
 app.use(bodyParser.json({ limit: '15gb' }));
 app.use(cors());
 app.use(logger('dev'));
 
 app.use(cookieParser());
-app.use(csrfMiddleware);
+
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cookieSession({ secret: process.env.EXPRESS_SECREAT }))
 app.use(session({
     secret: process.env.EXPRESS_SECREAT,
     resave: true,
@@ -78,7 +78,7 @@ db.connection().then((database) => {
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     })
-}).catch(() => {
-    const err = new APIError('server not found', httpStatus.NOT_FOUND, true);
+}).catch((e) => {
+    const err = new APIError(`${e.message}`, httpStatus.NOT_FOUND, true);
     return next(err);
 })
