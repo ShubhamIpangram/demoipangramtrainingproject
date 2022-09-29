@@ -41,6 +41,9 @@ router.route('/filterMongodbaggregation')
 router.route('/mapMongodbaggregation')
     .get(projectCtrl.mapMongodbaggregation);
 
+router.route('/camparisionOperators')
+    .get(projectCtrl.camparisionOperators);
+
 
 
 module.exports = router;

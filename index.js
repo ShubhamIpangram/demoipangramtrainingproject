@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const session = require("express-session")
 const bodyParser = require('body-parser')
 const db = require('./config/database');
@@ -8,19 +9,31 @@ const expressValidation = require('express-validation');
 const path = require("path")
 const cors = require('cors');
 const logger = require('morgan');
+const csurf = require('csurf');
+const cookieParser = require('cookie-parser');
+
 
 const port = process.env.PORT || 8001
 console.log("port..", process.env.PORT);
 
 const app = express();
+app.use(helmet());
+
+
+const csrfMiddleware = csurf({
+    cookie: true
+});
 app.use(bodyParser.urlencoded({ limit: '15gb', extended: false }));
 app.use(bodyParser.json({ limit: '15gb' }));
 app.use(cors());
 app.use(logger('dev'));
 
+app.use(cookieParser());
+app.use(csrfMiddleware);
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    secret: "practice",
+    secret: process.env.EXPRESS_SECREAT,
     resave: true,
     saveUninitialized: true
 }));
@@ -65,4 +78,7 @@ db.connection().then((database) => {
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     })
-});
+}).catch(() => {
+    const err = new APIError('server not found', httpStatus.NOT_FOUND, true);
+    return next(err);
+})

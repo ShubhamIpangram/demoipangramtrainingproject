@@ -12,7 +12,7 @@ const { ObjectId } = require('mongodb');
 const salaryColl = db.collection("salary")
 const dateColl = db.collection("dateCollection")
 const itemColl = db.collection("items")
-
+const productColl = db.collection("product");
 
 exports.addproject = async (req, res, next) => {
     try {
@@ -660,6 +660,31 @@ exports.mapMongodbaggregation = async (req, res, next) => {
                             in: { $add: ["$$grade", 10] }
                         }
                     }
+                }
+            }
+        ]).toArray();
+        console.log('test-----', result)
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+exports.camparisionOperators = async (req, res, next) => {
+    try {
+        const result = await productColl.aggregate([
+            {
+                $project:
+                {
+                    productName: 1,
+                    launchedDate: 1,
+                    price: 1,
+                    productPrice: { $ne: ["$price", 600] },
+                    _id: 0
                 }
             }
         ]).toArray();
