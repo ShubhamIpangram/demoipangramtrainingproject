@@ -458,6 +458,7 @@ exports.totalProductPrice = async (req, res, next) => {
 
 exports.productListWithotSkuNumber = async (req, res, next) => {
     try {
+
         const result = await query.find(productColl);
         result.forEach((el) => {
             delete el['skuNumber']

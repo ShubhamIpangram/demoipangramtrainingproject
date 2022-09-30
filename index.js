@@ -9,10 +9,9 @@ const expressValidation = require('express-validation');
 const path = require("path")
 const cors = require('cors');
 const logger = require('morgan');
-
 const cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
-
+var csrf = require('csurf');
 
 
 const port = process.env.PORT || 8001
@@ -28,7 +27,7 @@ app.use(logger('dev'));
 
 app.use(cookieParser());
 
-
+var csrfProtection = csrf({ cookie: true });
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cookieSession({ secret: process.env.EXPRESS_SECREAT }))
@@ -46,6 +45,12 @@ db.connection().then((database) => {
     app.use('/api/project', require('./routes/project.route'));
 
     app.use('/api/product', require('./routes/product.route'));
+
+    // app.use('/api/csrf', csrfProtection, (req, res, next) => {
+    //     res.send({ csrfToken: req.csrfToken() })
+    //     console.log("CSRF", req.csrfToken())
+    // });
+
 
     app.use((err, req, res, next) => {
         if (err instanceof expressValidation.ValidationError) {
