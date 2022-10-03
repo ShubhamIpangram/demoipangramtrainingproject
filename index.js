@@ -13,7 +13,6 @@ const cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var csrf = require('csurf');
 
-
 const port = process.env.PORT || 8001
 console.log("port..", process.env.PORT);
 
@@ -36,6 +35,37 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+io.on('connection', socket => {
+    console.log("Connecting")
+    socket.on("new user", function (data) {
+
+
+        socket.userId = data;
+        activeUsers.add(data);
+        io.emit("new user", [...activeUsers]);
+    });
+
+    socket.on("disconnect", () => {
+        activeUsers.delete(socket.userId);
+        io.emit("user disconnected", socket.userId);
+    });
+
+    socket.on("chat message", function (data) {
+        io.emit("chat message", data);
+    });
+
+    socket.on("typing", function (data) {
+        socket.broadcast.emit("typing", data);
+    });
+    // client.on('event', data => { /* … */
+    //     console.log("Socket Server Connected", data)
+    // });
+    //client.on('disconnect', () => { console.log("Socket Server DisConnected") });
+});
 
 db.connection().then((database) => {
 
@@ -80,10 +110,13 @@ db.connection().then((database) => {
         });
     }
     );
-    app.listen(port, () => {
+
+    server.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     })
 }).catch((e) => {
     const err = new APIError(`${e.message}`, httpStatus.NOT_FOUND, true);
-    return next(err);
+    console.log("Error--", err);
 })
+
+

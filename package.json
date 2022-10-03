@@ -26,6 +26,7 @@
     "express-session": "^1.17.3",
     "express-validation": "^4.1.0",
     "helmet": "^6.0.0",
+    "http": "^0.0.1-security",
     "http-status": "^1.5.3",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
@@ -33,6 +34,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.8",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "socket.io": "^4.5.2"
   }
 }
