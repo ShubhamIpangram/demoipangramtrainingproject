@@ -39,5 +39,4 @@ router.route('/productListWithotSkuNumber')
     .get(productCtrl.productListWithotSkuNumber)
 
 
-
 module.exports = router;
