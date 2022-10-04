@@ -37,8 +37,11 @@ app.use(session({
 }));
 
 
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const https = require('https')
+
+const SocketServer = https.createServer(app);
+
+const io = require('socket.io')(SocketServer);
 io.on('connection', socket => {
     console.log("Connecting")
     socket.on("new user", function (data) {
@@ -110,8 +113,7 @@ db.connection().then((database) => {
         });
     }
     );
-
-    server.listen(port, () => {
+    SocketServer.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     })
 }).catch((e) => {
