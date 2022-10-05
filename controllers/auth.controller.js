@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
+const { ObjectId } = require('mongodb');
 const { signInValidation, signUpValidation, emailValidation, resetPasswordValidation, checkId } = require('../helpers/validation');
 
 const privateKey = fs.readFileSync('C:/Windows/System32/drivers/etc/private.key',
@@ -103,3 +104,66 @@ exports.signup = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
     }
 };
+
+
+exports.userImageUpload = async (req, res, next) => {
+    try {
+        const id = ObjectId(req.params.id);
+        const bodyData = req.body;
+
+        if (req.file) {
+            bodyData.profileImage = "/uploads/" + req.file.filename;
+        }
+        const result = await query.findOneAndUpdate(userColl,
+            { _id: id },
+            { $set: bodyData },
+            { returnOriginal: false },
+            { new: true }
+        );
+
+        delete result.value["password"];
+        const obj = resPattern.successPattern(httpStatus.OK, result.value, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+exports.multipleImageUpload = async (req, res, next) => {
+    try {
+
+        console.log('Uploading')
+        const id = ObjectId(req.params.id);
+        const bodyData = req.body;
+
+        if (req.files.documentImage) {
+            bodyData.documentImage =
+                "uploads/" +
+                req.files.documentImage[0].filename;
+        }
+
+        if (req.files.profile) {
+            bodyData.profile =
+                "uploads/" +
+                req.files.profile[0].filename;
+        }
+
+
+        const result = await query.findOneAndUpdate(userColl,
+            { _id: id },
+            { $set: bodyData },
+            { returnOriginal: false },
+            { new: true }
+        );
+
+        delete result.value["password"];
+        const obj = resPattern.successPattern(httpStatus.OK, result.value, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}

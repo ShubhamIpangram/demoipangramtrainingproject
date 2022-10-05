@@ -1,20 +1,24 @@
+const db = require('../index')
+const query = require('../query/query');
 
-const db = require('./database');
-const userColl = db.connection("user");
 const APIError = require("../helpers/APIError");
 const resPattern = require("../helpers/resPattern");
 const httpStatus = require("http-status");
-const query = require("../query/query");
 const LocalStrategy = require('passport-local').Strategy;
+const userColl = db.collection('user');
 
 
 exports.intializePassport = (passport) => {
 
     passport.use(new LocalStrategy(async (username, password, done) => {
 
-        console.log("Shubham--", passport, username, password)
         try {
-            const user = await query.findOne(userColl, username);
+            const userData = {
+                name: username,
+                password: password
+            }
+            console.log("userData--", username, password)
+            const user = await query.findOne(userColl, userData);
             console.log("test-", user)
             if (!user) return done(null, false);
 
