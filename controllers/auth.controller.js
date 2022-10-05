@@ -133,8 +133,6 @@ exports.userImageUpload = async (req, res, next) => {
 
 exports.multipleImageUpload = async (req, res, next) => {
     try {
-
-        console.log('Uploading')
         const id = ObjectId(req.params.id);
         const bodyData = req.body;
 
@@ -150,12 +148,10 @@ exports.multipleImageUpload = async (req, res, next) => {
                 req.files.profile[0].filename;
         }
 
-
         const result = await query.findOneAndUpdate(userColl,
             { _id: id },
             { $set: bodyData },
-            { returnOriginal: false },
-            { new: true }
+            { returnOriginal: false }
         );
 
         delete result.value["password"];
@@ -164,6 +160,7 @@ exports.multipleImageUpload = async (req, res, next) => {
             ...obj,
         });
     } catch (e) {
+        console.log(e);
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
     }
 }

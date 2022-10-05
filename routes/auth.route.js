@@ -10,9 +10,6 @@ router.route('/signup')
 router.route('/imageUpload/:id')
     .post(upload.single("profileImage"), authCtrl.userImageUpload);
 
-router.route('/imageUpload/:id')
-    .post(upload.single("profileImage"), authCtrl.userImageUpload);
-
 router.route('/multipleImageUpload/:id')
     .post(upload.fields([
         { name: "documentImage", maxCount: 1 },

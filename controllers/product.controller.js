@@ -471,3 +471,48 @@ exports.productListWithotSkuNumber = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+
+exports.mostUsefulJavaScriptFunction = async (req, res, next) => {
+    try {
+
+        const persons = [
+            {
+                name: 'Person 1',
+                age: 32
+            },
+
+            {
+                name: 'Person 2',
+                age: 40
+            },
+        ];
+
+        let foundOver35 = false;
+
+        for (let i = 0; i < persons.length; i++) {
+            if (persons[i].age > 35) {
+                foundOver35 = true;
+                break;
+            }
+        }
+
+        if (foundOver35) {
+            console.log("Yup, there are a few people here!")
+        }
+
+        if(persons.some(person => {
+            return person.age > 35
+        })) {
+            console.log("Found some people!")
+        }
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result: foundOver35 }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}

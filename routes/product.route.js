@@ -39,4 +39,7 @@ router.route('/productListWithotSkuNumber')
     .get(productCtrl.productListWithotSkuNumber)
 
 
+router.route('/mostUsefulJavaScriptFunction')
+    .get(productCtrl.mostUsefulJavaScriptFunction)
+
 module.exports = router;
