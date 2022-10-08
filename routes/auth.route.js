@@ -16,6 +16,8 @@ router.route('/multipleImageUpload/:id')
         { name: "profile", maxCount: 1 },
     ]), authCtrl.multipleImageUpload);
 
+router.route('/nodejsGlobalObject')
+    .post(authCtrl.nodeJsGlobalObject);
 
 
 module.exports = router;

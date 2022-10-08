@@ -90,6 +90,7 @@ db.connection().then(async (database) => {
 
     app.use('/api/product', require('./routes/product.route'));
     app.use('/api/stripe', require('./routes/stripe.route'));
+    
 
 
     app.use((err, req, res, next) => {

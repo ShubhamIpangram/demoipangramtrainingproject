@@ -11,6 +11,9 @@ const jwt = require("jsonwebtoken");
 const fs = require('fs');
 const { ObjectId } = require('mongodb');
 const { signInValidation, signUpValidation, emailValidation, resetPasswordValidation, checkId } = require('../helpers/validation');
+const os = require('os');
+const dns = require('dns');
+
 
 const privateKey = fs.readFileSync('C:/Windows/System32/drivers/etc/private.key',
     { encoding: 'utf8', flag: 'r' });
@@ -157,6 +160,93 @@ exports.multipleImageUpload = async (req, res, next) => {
 
         delete result.value["password"];
         const obj = resPattern.successPattern(httpStatus.OK, result.value, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+
+exports.nodeJsGlobalObject = async (req, res, next) => {
+    try {
+
+        console.log(__dirname);
+        const directoryName = __dirname
+
+        const fileName = __filename
+        console.log(__filename);
+
+        //NodeJS OS Module
+        console.log("os.freemem(): \n", os.freemem());
+        console.log("os.homedir(): \n", os.homedir());
+        console.log("os.hostname(): \n", os.hostname());
+        console.log("os.endianness(): \n", os.endianness());
+        console.log("os.loadavg(): \n", os.loadavg());
+        console.log("os.platform(): \n", os.platform());
+        console.log("os.release(): \n", os.release());
+        console.log("os.tmpdir(): \n", os.tmpdir());
+        console.log("os.totalmem(): \n", os.totalmem());
+        console.log("os.type(): \n", os.type());
+        console.log("os.uptime(): \n", os.uptime());
+
+
+        // // NOdeJS Timer
+        // setInterval(() => {
+        //     console.log("setInterval: Hey! 1 millisecond completed!..");
+        // }, 1000);
+
+
+        // var i = 0;
+        // console.log(i);
+        // setInterval(() => {
+        //     i++;
+        //     console.log(i);
+        // }, 1000);
+
+
+        // setTimeout(function () {
+        //     console.log("setTimeout: Hey! 1000 millisecond completed!..");
+        // }, 1000);
+
+
+        // function welcome() {
+        //     console.log("Welcome to IPangram");
+        // }
+        // var id1 = setTimeout(welcome, 1000);
+        // var id2 = setInterval(welcome, 1000);
+        // clearTimeout(id1);
+        // //clearInterval(id2);  
+
+
+
+
+
+
+        // NodeJS DNS module
+
+        dns.lookup('www.javatpoint.com', (err, addresses, family) => {
+            console.log('addresses:', addresses);
+            console.log('family:', family);
+        });
+
+        dns.lookupService('127.0.0.1', 22, (err, hostname, service) => {
+            console.log(hostname, service);
+            // Prints: localhost  
+        });
+
+        console.log(`Process Architecture: ${process.arch}`);
+        console.log(`Process PID: ${process.pid}`);
+        console.log(`Process Platform: ${process.platform}`);
+        console.log(`Process Version: ${process.version}`);
+
+
+        querystring = require('querystring');
+        const obj1 = querystring.parse('name=shubham shukla&company=IPangram');
+        console.log(obj1);
+        const obj = resPattern.successPattern(httpStatus.OK, fileName, `success`);
         return res.status(obj.code).json({
             ...obj,
         });

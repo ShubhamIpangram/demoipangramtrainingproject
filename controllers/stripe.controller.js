@@ -55,3 +55,21 @@ exports.payment = async (req, res, next) => {
         res.send("Error")
     })
 };
+
+
+exports.retriveSession = async (req, res, next) => {
+    try {
+        const session = await stripe.checkout.sessions.retrieve(
+            req.query.sessionId
+        );
+        let obj = resPattern.successPattern(
+            httpStatus.OK,
+            session,
+            "success"
+        );
+        return res.status(obj.code).json(obj);
+
+    } catch (e) {
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+};
