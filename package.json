@@ -13,6 +13,7 @@
     "aws-sdk": "^2.1220.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
+    "chalk": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
@@ -21,6 +22,8 @@
     "csrf-simple-origin": "^2.0.2",
     "csurf": "^1.11.0",
     "csurf-expire": "^2.0.0",
+    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
@@ -30,14 +33,18 @@
     "http-status": "^1.5.3",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "mongodb": "^4.10.0",
+    "mongodb": "^3.7.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.8",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "socket.io": "^4.5.2"
+    "ramda": "^0.28.0",
+    "socket.io": "^4.5.2",
+    "stripe": "^10.13.0",
+    "underscore": "^1.13.6"
   }
 }

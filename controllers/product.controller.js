@@ -476,41 +476,102 @@ exports.productListWithotSkuNumber = async (req, res, next) => {
 exports.mostUsefulJavaScriptFunction = async (req, res, next) => {
     try {
 
-        const persons = [
-            {
-                name: 'Person 1',
-                age: 32
-            },
+        // const persons = [
+        //     {
+        //         name: 'Person 1',
+        //         age: 32
+        //     },
 
-            {
-                name: 'Person 2',
-                age: 40
-            },
-        ];
+        //     {
+        //         name: 'Person 2',
+        //         age: 40
+        //     },
+        // ];
 
-        let foundOver35 = false;
+        // let foundOver35 = false;
 
-        for (let i = 0; i < persons.length; i++) {
-            if (persons[i].age > 35) {
-                foundOver35 = true;
-                break;
-            }
-        }
+        // for (let i = 0; i < persons.length; i++) {
+        //     if (persons[i].age > 35) {
+        //         foundOver35 = true;
+        //         break;
+        //     }
+        // }
 
-        if (foundOver35) {
-            console.log("Yup, there are a few people here!")
-        }
+        // if (foundOver35) {
+        //     console.log("Yup, there are a few people here!")
+        // }
 
-        if(persons.some(person => {
-            return person.age > 35
-        })) {
-            console.log("Found some people!")
-        }
+        // if(persons.some(person => {
+        //     return person.age > 35
+        // })) {
+        //     console.log("Found some people!")
+        // }
 
-        const obj = resPattern.successPattern(httpStatus.OK, { result: foundOver35 }, `success`);
+
+
+
+        // const entries = [
+        //     {
+        //         id: 1
+        //     },
+
+        //     {
+        //         id: 2
+        //     },
+
+        //     {
+        //         id: 3
+        //     },
+        // ];
+
+        // if (entries.every(entry => {
+        //     return Number.isInteger(entry.id) && entry.id > 0;
+        // })) {
+        //     console.log("All the entries have a valid id")
+        // } else {
+        //     console.log("invalid entries")
+        // }
+
+        // const numbers = [1, 2, 3, 4, 5];
+        // console.log(numbers.includes(4));
+        // const name = "Ankush";
+        // console.log(name.includes('ank')); // false, because first letter is in small caps
+        // console.log(name.includes('Ank')); // true, as expected
+
+
+
+        // const headline = "And in tonight's special, the guest we've all been waiting for!";
+        // const startIndex = headline.indexOf('the');
+        // const endIndex = headline.indexOf('waiting');
+        // const newHeadline = headline.slice(startIndex, endIndex);
+        // console.log(newHeadline); // guest we've all been
+
+        // const items = ['eggs', 'milk', 'cheese', 'bread', 'butter'];
+        // items.splice(2, 1);
+        // console.log(items); // [ 'eggs', 'milk', 'bread', 'butter' ]
+
+
+        // const items = ['eggs', 'milk', 'cheese', 'bread', 'butter'];
+        // items.shift()
+        // console.log(items); // [ 'milk', 'cheese', 'bread', 'butter' ]
+
+        // const items = ['eggs', 'milk'];
+        // items.unshift('bread')
+        // console.log(items); // [ 'bread', 'eggs', 'milk' ]
+
+        const heights = [1, 2, 4, 5, 6, 7, 1, 1];
+        heights.fill(0);
+        console.log(heights); // [0, 0, 0, 0, 0, 0, 0, 0]
+        
+        const heights2 = [1, 2, 4, 5, 6, 7, 1, 1];
+        heights2.fill(0, 4);
+        console.log(heights2); // [1, 2, 4, 5, 0, 0, 0, 0]
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result: heights }, `success`);
         return res.status(obj.code).json({
             ...obj,
         });
+
     } catch (e) {
         console.log('error---', e)
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))

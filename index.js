@@ -14,6 +14,8 @@ var cookieSession = require('cookie-session');
 var csrf = require('csurf');
 var passport = require('passport');
 
+
+
 //const { intializePassport } = require('./config/passportConfig')
 // var LocalStrategy = require('passport-local');
 // const query = require("./query/query");
@@ -87,7 +89,7 @@ db.connection().then(async (database) => {
     app.use('/api/project', require('./routes/project.route'));
 
     app.use('/api/product', require('./routes/product.route'));
-
+    app.use('/api/stripe', require('./routes/stripe.route'));
 
 
     app.use((err, req, res, next) => {
@@ -118,7 +120,7 @@ db.connection().then(async (database) => {
         });
     }
     );
-    
+
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     })

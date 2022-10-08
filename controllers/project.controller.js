@@ -13,6 +13,14 @@ const salaryColl = db.collection("salary")
 const dateColl = db.collection("dateCollection")
 const itemColl = db.collection("items")
 const productColl = db.collection("product");
+//const lodash = require("lodash");
+const _ = require("underscore");
+const R = require("ramda");
+const dayjs = require("dayjs");
+const { format, formatDistance, formatRelative, subDays } = require("date-fns")
+
+
+
 
 exports.addproject = async (req, res, next) => {
     try {
@@ -690,6 +698,46 @@ exports.camparisionOperators = async (req, res, next) => {
         ]).toArray();
         console.log('test-----', result)
         const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+exports.practiceNodejsModule = async (req, res, next) => {
+    try {
+
+        // const nums = lodash.range(1, 9);
+        // // => [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        // const chunks = lodash.chunk(nums, 2);
+        // // => [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        // const right = lodash.takeRight(nums, 2);
+        // console.log('test-----', right)
+
+        // const list = [[5, 1, 7], [3, 2, 1]];
+        // const underExample = _.invoke(list, 'sort');
+
+
+        // const double = x => x * 2;
+        // const test1 = R.map(double, [1, 2, 3]);
+        // // => [2, 4, 6]
+        // const test2 = R.map(double, { x: 1, y: 2, z: 3 });
+
+
+        const dateRes = dayjs().startOf('month').add(5, 'day').set('year', 2022).format('YYYY-MM-DD HH:mm:ss');
+
+        // const dateRes1 = format(new Date(), '[Today is a] dddd')
+        // //=> "Today is a Wednesday"
+        // const dateRes2 = formatDistance(subDays(new Date(), 3), new Date())
+        // //=> "3 days ago"
+        // const dateRes3 = formatRelative(subDays(new Date(), 3), new Date())
+        // //=> "last Friday at 7:26 p.m."
+
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result: dateRes }, `success`);
         return res.status(obj.code).json({
             ...obj,
         });

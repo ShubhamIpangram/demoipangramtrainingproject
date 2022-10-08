@@ -81,13 +81,14 @@ exports.signup = async (req, res, next) => {
             user.expireTime = "";
             user.password = generatePassword(req.body.password);
             user.createdAt = new Date(currentDate);
-            const insertdata = await userColl.insert(user);
+            const insertdata = await query.insert(userColl, user);
 
             console.log("insert data::------", insertdata);
             if (insertdata) {
+                delete insertdata.ops[0]["password"];
                 const obj = resPattern.successPattern(
                     httpStatus.OK,
-                    insertdata.insertedCount,
+                    insertdata.ops[0],
                     `success`
                 );
                 return res.status(obj.code).json({
