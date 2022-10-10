@@ -313,8 +313,37 @@ exports.importantJavaScriptFunction = async (req, res, next) => {
         const end = performance.now()
 
         const total = start - end
-        Log(total)
+        //  Log(total)
 
+        const delDuplications = array => [...new Set(array)]
+        Log(delDuplications(["One", "Two", "Three", "Four", "Three", "Four"]))
+
+        const input = 5;
+        input === 5 && Log("it is 5")
+        input === 5 || Log("it is Not 5")
+
+
+        function defaultTop5(arg) {
+            arg = arg || 5;
+            Log(arg)
+        }
+
+        let arg1 = 2
+        let arg2 = null
+
+        defaultTop5(arg1);
+        defaultTop5(arg2);
+
+
+        function temperature(temp) {
+            return (temp > 39 || temp < 35.5) ? 'Visit Doctor!' : (temp < 37.5 && temp < 36.5) ? 'Go Out And Play!!' : (temp <= 39 && temp >= 35.5) ? 'Take Some Rest!' : ""
+        }
+
+        Log(temperature(38))
+        Log(temperature(36))
+        Log(temperature(39.1))
+        Log(temperature(35.1))
+        Log(temperature(37.1))
         const obj = resPattern.successPattern(httpStatus.OK, arrayData, `success`);
         return res.status(obj.code).json({
             ...obj,
