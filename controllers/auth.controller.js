@@ -255,3 +255,72 @@ exports.nodeJsGlobalObject = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
     }
 }
+
+exports.importantJavaScriptFunction = async (req, res, next) => {
+    try {
+        const Log = console.log
+        Log("does it Work?")
+
+        const Array1 = ["One", "Two", "Three", "Four"]
+        const Array2 = ["five", "Six", "Seven"]
+        const Merge = Array1.concat(Array2)
+        Log(Merge)
+
+        const User = {
+            email: "shubhamshukla2k14@gmail.com",
+            userName: "Shubham Shukla"
+        }
+
+        const Artical = {
+            title: "JavaScript Tips",
+            date: "10-10-2020"
+        }
+
+        const Summery = {
+            ...User, ...Artical
+        }
+
+        Log(Summery)
+
+        const Data = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
+        Data.length = 5;
+        Log(Data)
+
+        const arrayData = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"]
+        arrayData.sort(() => { return Math.random() - 0.5 })
+        Log(arrayData)
+
+        function isNum(n) {
+            return !isNaN(parseFloat(n) && isFinite(n))
+        }
+
+        Log(isNum(1466))
+        Log(isNum(13.85))
+        Log(isNum("Shubham"))
+
+        const isStr = value => typeof value === 'string';
+        Log(isStr("Shubham"))
+        Log(isStr(5465))
+        Log(isStr(true))
+
+        const isNull = value => value === null || value === undefined;
+        Log(isNull())
+        Log(isNull(null))
+        Log(isNull(5465))
+        Log(isNull(true))
+
+        const start = performance.now()
+        const end = performance.now()
+
+        const total = start - end
+        Log(total)
+
+        const obj = resPattern.successPattern(httpStatus.OK, arrayData, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}

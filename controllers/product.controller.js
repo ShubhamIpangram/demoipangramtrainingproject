@@ -562,7 +562,7 @@ exports.mostUsefulJavaScriptFunction = async (req, res, next) => {
         const heights = [1, 2, 4, 5, 6, 7, 1, 1];
         heights.fill(0);
         console.log(heights); // [0, 0, 0, 0, 0, 0, 0, 0]
-        
+
         const heights2 = [1, 2, 4, 5, 6, 7, 1, 1];
         heights2.fill(0, 4);
         console.log(heights2); // [1, 2, 4, 5, 0, 0, 0, 0]

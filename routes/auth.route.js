@@ -19,5 +19,7 @@ router.route('/multipleImageUpload/:id')
 router.route('/nodejsGlobalObject')
     .post(authCtrl.nodeJsGlobalObject);
 
+router.route('/importantJavaScriptFunction')
+    .post(authCtrl.importantJavaScriptFunction);
 
 module.exports = router;

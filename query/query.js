@@ -40,6 +40,7 @@ exports.createPagination = (collection, query1, skip, limit) => {
 
     })
 }
+
 exports.insert = (collection, query) => {
     query.createdAt = moment().utc().format();
     return new Promise((resolve, reject) => {
@@ -55,6 +56,7 @@ exports.insert = (collection, query) => {
         })
     })
 }
+
 exports.insertMany = (collection, query) => {
     // query.createdAt= moment().utc().format();
     return new Promise((resolve, reject) => {
@@ -70,6 +72,7 @@ exports.insertMany = (collection, query) => {
         })
     })
 }
+
 exports.updateMany = (collection, query, setParameters, getResponseBack) => {
     return new Promise((resolve, reject) => {
         collection.updateMany(query, setParameters, getResponseBack, (err, recordSaved) => {
@@ -78,6 +81,7 @@ exports.updateMany = (collection, query, setParameters, getResponseBack) => {
         })
     })
 }
+
 exports.findOneAndUpdate = (collection, query, setParameters, getResponseBack) => {
     return new Promise((resolve, reject) => {
         collection.findOneAndUpdate(
@@ -90,6 +94,7 @@ exports.findOneAndUpdate = (collection, query, setParameters, getResponseBack) =
         );
     })
 }
+
 exports.deleteMany = (collection, query) => {
     return new Promise((resolve, reject) => {
         collection.deleteMany(query, (err, deletedRecords) => {
@@ -97,6 +102,7 @@ exports.deleteMany = (collection, query) => {
         })
     })
 }
+
 exports.deleteOne = (collection, query) => {
     return new Promise((resolve, reject) => {
         collection.deleteOne(query, (err, deletedRecords) => {
@@ -109,6 +115,7 @@ exports.deleteOne = (collection, query) => {
         })
     })
 }
+
 exports.find = (collection, query1, additionalParameter, sorting) => {
 
     return new Promise((resolve, reject) => {
