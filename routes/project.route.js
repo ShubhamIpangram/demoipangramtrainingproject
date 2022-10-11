@@ -47,5 +47,6 @@ router.route('/camparisionOperators')
 router.route('/practiceNodejsModule')
     .get(projectCtrl.practiceNodejsModule);
 
-
+router.route('/practiceMongodbPipeline')
+    .post(projectCtrl.practiceMongodbPipeline);
 module.exports = router;

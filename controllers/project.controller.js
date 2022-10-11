@@ -746,3 +746,136 @@ exports.practiceNodejsModule = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+
+exports.practiceMongodbPipeline = async (req, res, next) => {
+    try {
+
+        const result = await salaryColl.aggregate(
+            [
+                {
+                    $project:
+                    {
+                        "name": 1,
+                        "summary":
+                        {
+                            $switch:
+                            {
+                                branches: [
+                                    {
+                                        case: { $gte: [{ $avg: "$scores" }, 90] },
+                                        then: "Doing great!"
+                                    },
+                                    {
+                                        case: {
+                                            $and: [{ $gte: [{ $avg: "$scores" }, 80] },
+                                            { $lt: [{ $avg: "$scores" }, 90] }]
+                                        },
+                                        then: "Doing pretty well."
+                                    },
+                                    {
+                                        case: { $lt: [{ $avg: "$scores" }, 80] },
+                                        then: "Needs improvement."
+                                    }
+                                ],
+                                default: "No scores found."
+                            }
+                        }
+                    }
+                }
+            ]
+        ).toArray();
+
+        const result1 = await salaryColl.aggregate(
+            [
+                {
+                    $project:
+                    {
+                        name: 1,
+                        discount:
+                        {
+                            $cond: { if: { $gte: ["$Salary", 15000] }, then: "Good Salary", else: "Low Salary" }
+                        }
+                    }
+                }
+            ]
+        ).toArray();
+
+
+        const result2 = await salaryColl.aggregate(
+            [
+                {
+                    $project:
+                    {
+                        name: 1,
+                        discount:
+                        {
+                            $cond: [{ $gte: ["$Salary", 15000] }, "Good Salary", "Low Salary"]
+                        }
+                    }
+                }
+            ]
+        ).toArray();
+
+        const id = ObjectId("632ad5e01080cd9c6de230fa");
+        const { skip, limit, searchText } = req.query;
+
+        const result4 = await projectColl.aggregate([
+            {
+                $match: {
+                    _id: id
+                }
+            }, {
+                $lookup: {
+                    from: 'technology',
+                    localField: 'technologyId',
+                    foreignField: '_id',
+                    as: 'technologys'
+                }
+            },
+            {
+                $unwind: "$technologys"
+            },
+            {
+                $lookup: {
+                    from: 'launguage',
+                    localField: 'technologys.languageId',
+                    foreignField: '_id',
+                    as: 'technologys.language'
+                }
+            },
+
+            { $project: { _id: 1, projectName: 1, description: 1, createdAt: 1, technologys: 1, language: 1 } },
+        ]).toArray();
+
+
+        const result5 = await salaryColl.aggregate(
+            [
+                {
+                    $project:
+                    {
+                        adjustedScores:
+                        {
+                            $map:
+                            {
+                                input: "$scores",
+                                as: "score",
+                                in: { $add: ["$$score", 10] }
+                            }
+                        }
+                    }
+                }
+            ]
+        ).toArray();
+
+
+        console.log('test-----', result4)
+        const obj = resPattern.successPattern(httpStatus.OK, { result: result5 }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
