@@ -22,6 +22,8 @@ const { format, formatDistance, formatRelative, subDays } = require("date-fns")
 
 
 
+
+
 exports.addproject = async (req, res, next) => {
     try {
         const requestdata = {
@@ -869,8 +871,50 @@ exports.practiceMongodbPipeline = async (req, res, next) => {
         ).toArray();
 
 
+
+        // const result6 = await salaryColl.aggregate(
+        //     [
+        //         {
+        //             $group:
+        //             {
+        //                 name:
+        //                 {
+        //                     $top:
+        //                     {
+        //                         output: ["$name", "$Salary"],
+        //                         sortBy: { "Salary": -1 }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     ]
+        // ).toArray();
+
+        const result7 = await productColl.aggregate([
+            {
+                $project: {
+                    date: {
+                        $dateToParts: { date: "$launchedDate" }
+                    },
+                    price: 1
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        date: {
+                            year: "$date.year",
+                            month: "$date.month",
+                            day: "$date.day"
+                        }
+                    },
+                    avgPrice: { $avg: "$price" }
+                }
+            }
+        ]).toArray();
+
         console.log('test-----', result4)
-        const obj = resPattern.successPattern(httpStatus.OK, { result: result5 }, `success`);
+        const obj = resPattern.successPattern(httpStatus.OK, { result: result7 }, `success`);
         return res.status(obj.code).json({
             ...obj,
         });

@@ -10,7 +10,7 @@ const moment = require("moment");
 const { ObjectId } = require('mongodb');
 const { productValidation } = require('../helpers/validation');
 const { generateNumber } = require("../helpers/commonfile");
-
+const orderColl = db.collection("order");
 
 exports.createProduct = async (req, res, next) => {
     try {
@@ -572,6 +572,83 @@ exports.mostUsefulJavaScriptFunction = async (req, res, next) => {
             ...obj,
         });
 
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+
+exports.updateFieldsInsideArray = async (req, res, next) => {
+    try {
+
+        const result = await orderColl.update({
+            _id: ObjectId("6346aef9074ab58ae1f64472")
+        },
+            [
+                {
+                    $set: {
+                        processList: {
+                            $map: {
+                                "input": "$processList",
+                                "in": {
+                                    $cond: [
+                                        {
+                                            $eq: [
+                                                "$$this.id",
+                                                "60b0f0e9659a3b001c235300"
+                                            ]
+                                        },
+                                        {
+                                            $mergeObjects: [
+                                                "$$this",
+                                                {
+                                                    "isCompleted": true
+                                                }
+                                            ]
+                                        },
+                                        "$$this"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                // {
+                //     "$set": {
+                //         "percentageCompleted": {
+                //             "$multiply": [
+                //                 {
+                //                     "$divide": [
+                //                         {
+                //                             "$size": {
+                //                                 "$filter": {
+                //                                     "input": "$processList",
+                //                                     "as": "process",
+                //                                     "cond": {
+                //                                         "$eq": [
+                //                                             "$$process.isCompleted",
+                //                                             true
+                //                                         ]
+                //                                     }
+                //                                 }
+                //                             }
+                //                         },
+                //                         {
+                //                             "$size": "$processList"
+                //                         }
+                //                     ]
+                //                 },
+                //                 100
+                //             ]
+                //         }
+                //     }
+                // }
+            ])
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
     } catch (e) {
         console.log('error---', e)
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))

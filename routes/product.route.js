@@ -42,4 +42,7 @@ router.route('/productListWithotSkuNumber')
 router.route('/mostUsefulJavaScriptFunction')
     .get(productCtrl.mostUsefulJavaScriptFunction)
 
+router.route('/updateFieldsInsideArray')
+    .post(productCtrl.updateFieldsInsideArray)
+
 module.exports = router;

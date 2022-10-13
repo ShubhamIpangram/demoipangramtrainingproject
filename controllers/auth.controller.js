@@ -344,6 +344,23 @@ exports.importantJavaScriptFunction = async (req, res, next) => {
         Log(temperature(39.1))
         Log(temperature(35.1))
         Log(temperature(37.1))
+
+
+        const favoriteFood = ["One", "Two", "Three", "Four"]
+        Log(...favoriteFood)
+
+        const garage = ["BMW", "VOLVO", "AUDI"]
+
+        const findCar = garage.includes('BMW');
+        Log(findCar)
+
+        const Age = [16, 17, 18]
+        const someFunction = Age.some((person) => person >= 18)
+        Log(someFunction)
+
+        const age = [15, 20, 19]
+        const someFunction1 = age.every((person) => person >= 18)
+        Log(someFunction1)
         const obj = resPattern.successPattern(httpStatus.OK, arrayData, `success`);
         return res.status(obj.code).json({
             ...obj,
