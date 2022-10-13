@@ -13,6 +13,10 @@ const salaryColl = db.collection("salary")
 const dateColl = db.collection("dateCollection")
 const itemColl = db.collection("items")
 const productColl = db.collection("product");
+//const fetch = require("node-fetch");
+const axios = require("axios")
+const orderColl = db.collection("order");
+
 //const lodash = require("lodash");
 const _ = require("underscore");
 const R = require("ramda");
@@ -915,6 +919,73 @@ exports.practiceMongodbPipeline = async (req, res, next) => {
 
         console.log('test-----', result4)
         const obj = resPattern.successPattern(httpStatus.OK, { result: result7 }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+
+exports.groupBYMultipleFields = async (req, res, next) => {
+    try {
+        const result = await dateColl.aggregate([
+            {
+                $group: {
+                    _id: {
+                        price: "$price",
+                        quantity: "$quantity"
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id.price",
+                    count: {
+                        $sum: 1
+                    }
+                }
+            },
+            {
+                $sort: {
+                    count: -1
+                }
+            }
+        ]).toArray();
+
+        const result1 = await productColl.distinct("price");
+
+        const url = 'https://www.geeksforgeeks.org/difference-between-fetch-and-axios-js-for-making-http-requests/?ref=leftbar-rightbar'
+        // const fetchData = await fetch('path-to-the-resource-to-be-fetched');
+
+        const axiousData = await axios.get(url);
+        console.log(axiousData.data);
+
+        const result2 = await orderColl.aggregate([
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "item",    // field in the orders collection
+                    foreignField: "item",  // field in the items collection
+                    as: "fromItems"
+                }
+            },
+            {
+                $replaceRoot: {
+                    newRoot: {
+                        $mergeObjects: [{
+                            $arrayElemAt: ["$fromItems", 0]
+                        },
+                            "$$ROOT"]
+                    }
+                }
+            },
+            { $project: { fromItems: 0 } }
+        ]).toArray();
+
+        console.log(result2)
+        const obj = resPattern.successPattern(httpStatus.OK, { result2 }, `success`);
         return res.status(obj.code).json({
             ...obj,
         });

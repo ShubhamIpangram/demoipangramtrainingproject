@@ -49,4 +49,9 @@ router.route('/practiceNodejsModule')
 
 router.route('/practiceMongodbPipeline')
     .post(projectCtrl.practiceMongodbPipeline);
+
+
+router.route('/groupBYMultipleFields')
+    .post(projectCtrl.groupBYMultipleFields);
+
 module.exports = router;
