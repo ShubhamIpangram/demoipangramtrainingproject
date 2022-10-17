@@ -654,3 +654,43 @@ exports.updateFieldsInsideArray = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+
+exports.findDocumentMonthWise = async (req, res, next) => {
+    try {
+
+        const result = await productColl.aggregate([
+            {
+                "$redact": {
+                    "$cond": [
+                        { "$eq": [{ "$month": "$launchedDate" }, 9] },
+                        "$$KEEP",
+                        "$$PRUNE"
+                    ]
+                }
+            }
+        ]).toArray();
+
+        const result1 = await productColl.aggregate([
+            {
+                "$project": {
+                    "month": { "$month": "$launchedDate" },
+                    "year": { "$year": "$launchedDate" },
+                    "productName": 1,
+                    "price": 1,
+                    "launchedDate": 1
+                }
+            },
+            { "$match": { "month": 10, "year": 2016 } }
+        ]).toArray();
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}
+

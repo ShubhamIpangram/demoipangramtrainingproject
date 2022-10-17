@@ -45,4 +45,7 @@ router.route('/mostUsefulJavaScriptFunction')
 router.route('/updateFieldsInsideArray')
     .post(productCtrl.updateFieldsInsideArray)
 
+router.route('/findDocumentMonthWise')
+    .post(productCtrl.findDocumentMonthWise)
+
 module.exports = router;

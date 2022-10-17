@@ -985,7 +985,7 @@ exports.groupBYMultipleFields = async (req, res, next) => {
         ]).toArray();
 
         console.log(result2)
-        const obj = resPattern.successPattern(httpStatus.OK, { result2 }, `success`);
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
         return res.status(obj.code).json({
             ...obj,
         });
