@@ -16,6 +16,7 @@ const productColl = db.collection("product");
 //const fetch = require("node-fetch");
 const axios = require("axios")
 const orderColl = db.collection("order");
+var cron = require('node-cron');
 
 //const lodash = require("lodash");
 const _ = require("underscore");
@@ -757,6 +758,44 @@ exports.practiceNodejsModule = async (req, res, next) => {
 exports.practiceMongodbPipeline = async (req, res, next) => {
     try {
 
+
+        cron.schedule('*/2 * * * *', () => {
+            console.log('running a task every two minute');
+        });
+
+        const resultData1 = await salaryColl.find({
+            $nor: [{ "name": "Shubham Shukla" },
+            { "name": "Virat Kohli" }]
+        }).toArray();
+
+
+        const resultData2 = await salaryColl.find({ "Salary": { $not: { $gte: 20000 } } }).toArray();
+
+
+        const resultData3 = await salaryColl.find({ "Salary": { $exists: true, $gte: 15000 } }).toArray();
+
+
+        const resultData4 = await salaryColl.find({ "Salary": { $exists: true } }).toArray();
+
+        const resultData5 = await productColl.find({ "price": { $type: "bool" } }).toArray();
+
+
+        const resultData6 = await productColl.find({ "price": { $mod: [3000, 1500] } }).toArray();
+
+        // const resultData7 = await productColl.find({ $text: { $search: "D-Link Router" } }).toArray();
+
+
+        const resultDat8 = await productColl.find({ $where: function () { var value = isString(this._id) && hex_md5(this._id) == '632ed82d94c8983f8d4dd878'; return value; } }).toArray();
+
+
+        const resultData9 = await salaryColl.find({ "scores": { $all: [91, 84] } }).toArray();
+
+        const resultData10 = await salaryColl.find({ "scores": { $size: 2 } }).toArray();
+
+        const resultData11 = await salaryColl.find({ "scores": { $elemMatch: { $gt: 50, $lt: 70 } } }).toArray();
+
+        const resultData = await dateColl.find({ "quantity": { $eq: 4 }, $comment: "Find item Quantity" }).toArray();
+
         const result = await salaryColl.aggregate(
             [
                 {
@@ -918,10 +957,11 @@ exports.practiceMongodbPipeline = async (req, res, next) => {
         ]).toArray();
 
         console.log('test-----', result4)
-        const obj = resPattern.successPattern(httpStatus.OK, { result: result7 }, `success`);
+        const obj = resPattern.successPattern(httpStatus.OK, { result: resultData }, `success`);
         return res.status(obj.code).json({
             ...obj,
         });
+
     } catch (e) {
         console.log('error---', e)
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))

@@ -684,7 +684,7 @@ exports.findDocumentMonthWise = async (req, res, next) => {
             { "$match": { "month": 10, "year": 2016 } }
         ]).toArray();
 
-        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        const obj = resPattern.successPattern(httpStatus.OK, { result1 }, `success`);
         return res.status(obj.code).json({
             ...obj,
         });
