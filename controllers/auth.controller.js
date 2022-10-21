@@ -13,7 +13,7 @@ const { ObjectId } = require('mongodb');
 const { signInValidation, signUpValidation, emailValidation, resetPasswordValidation, checkId } = require('../helpers/validation');
 const os = require('os');
 const dns = require('dns');
-
+const schedule = require('node-schedule');
 
 const privateKey = fs.readFileSync('C:/Windows/System32/drivers/etc/private.key',
     { encoding: 'utf8', flag: 'r' });
@@ -361,10 +361,156 @@ exports.importantJavaScriptFunction = async (req, res, next) => {
         const age = [15, 20, 19]
         const someFunction1 = age.every((person) => person >= 18)
         Log(someFunction1)
+
+        function myFunction() {
+            let a = 4;
+            return a * a;
+        }
+
+
+        const person = {
+            firstName: "Shubham",
+            lastName: "Shukla",
+            name: "test",
+            city: "Satna",
+            age: 25
+        };
+        // delete person.age;
+        person.nationality = "English";
+
+        // person.name = function () {
+        //     return this.firstName + " " + this.lastName;
+        // };
+
+
+        let txt = "";
+        for (let x in person) {
+            txt += person[x];
+            console.log(txt);
+        }
+
+        let message = "Hello Ipangram";
+        let name1 = message.toUpperCase();
+
+        Log(name1)
+
+        Log(person.firstName + "," + person.age + "," + person.city)
+
+        const myArray = Object.values(person);
+        Log("Object Value: " + myArray)
         const obj = resPattern.successPattern(httpStatus.OK, arrayData, `success`);
         return res.status(obj.code).json({
             ...obj,
         });
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+exports.nodeCronJob = async (req, res, next) => {
+    try {
+
+        const job1 = schedule.scheduleJob('1 * * * *', function () {
+            console.log('The answer to life, the universe, and everything!');
+        });
+
+        const date = new Date(2022, 10, 18, 5, 30, 0);
+
+        const job = schedule.scheduleJob(date, function () {
+            console.log('The world is going to end today.');
+        });
+
+        console.log("node Scheduler::---", date, job)
+
+
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+exports.switchCasejavaScript = async (req, res, next) => {
+    try {
+
+        switch (new Date().getDay()) {
+            case 0:
+                day = "Sunday";
+                break;
+            case 1:
+                day = "Monday";
+                break;
+            case 2:
+                day = "Tuesday";
+                break;
+            case 3:
+                day = "Wednesday";
+                break;
+            case 4:
+                day = "Thursday";
+                break;
+            case 5:
+                day = "Friday";
+                break;
+            case 6:
+                day = "Saturday";
+        }
+
+        switch (new Date().getDay()) {
+            case 6:
+                text = "Today is Saturday";
+                break;
+            case 0:
+                text = "Today is Sunday";
+                break;
+            default:
+                text = "Looking forward to the Weekend";
+        }
+
+
+        switch (new Date().getDay()) {
+            case 4:
+            case 5:
+                text1 = "Soon it is Weekend";
+                break;
+            case 0:
+            case 6:
+                text1 = "It is Weekend";
+                break;
+            default:
+                text1 = "Looking forward to the Weekend";
+        }
+
+
+        let x = "0";
+        switch (x) {
+            case 0:
+                text2 = "Off";
+                break;
+            case 1:
+                text2 = "On";
+                break;
+            default:
+                text2 = "No value found";
+        }
+        console.log(day, new Date().getDay(), text, text1, text2)
+
+
+        const letters = new Set(["a", "b", "c"]);
+        console.log(letters)
+
+        typeof "John"                 // Returns "string"
+        typeof 3.14                   // Returns "number"
+        typeof NaN                    // Returns "number"
+        typeof false                  // Returns "boolean"
+        typeof [1, 2, 3, 4]              // Returns "object"
+        typeof { name: 'John', age: 34 }  // Returns "object"
+        typeof new Date()             // Returns "object"
+        typeof function () { }         // Returns "function"
+        typeof myCar                  // Returns "undefined" *
+        typeof null                   // Returns "object"
+
+
     } catch (e) {
         console.log(e);
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));

@@ -8,4 +8,10 @@ router.route('/payment')
 router.route('/retriveSession')
     .post(authCtrl.retriveSession);
 
+router.route('/Webhook')
+    .post(authCtrl.Webhook);
+
+router.route('/checkoutSessionLineItems')
+    .post(authCtrl.checkoutSessionLineItems);
+
 module.exports = router;

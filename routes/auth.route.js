@@ -22,4 +22,9 @@ router.route('/nodejsGlobalObject')
 router.route('/importantJavaScriptFunction')
     .post(authCtrl.importantJavaScriptFunction);
 
+router.route('/nodeCronJob')
+    .post(authCtrl.nodeCronJob);
+
+router.route('/switchCasejavaScript')
+    .post(authCtrl.switchCasejavaScript);
 module.exports = router;

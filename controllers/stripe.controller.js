@@ -73,3 +73,59 @@ exports.retriveSession = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
     }
 };
+
+exports.Webhook = async (req, res, next) => {
+    try {
+        const event = request.body;
+
+        // Handle the event
+        switch (event.type) {
+            case 'payment_intent.succeeded':
+                const paymentIntent = event.data.object;
+                console.log('PaymentIntent was successful!');
+                break;
+            case 'payment_method.attached':
+                const paymentMethod = event.data.object;
+                console.log('PaymentMethod was attached to a Customer!');
+                break;
+            // ... handle other event types
+            default:
+                console.log(`Unhandled event type ${event.type}`);
+        }
+
+        // Return a 200 response to acknowledge receipt of the event
+        res.json({ received: true });
+
+        let obj = resPattern.successPattern(
+            httpStatus.OK,
+            session,
+            "success"
+        );
+        return res.status(obj.code).json(obj);
+
+    } catch (e) {
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+};
+
+exports.checkoutSessionLineItems
+    = async (req, res, next) => {
+        try {
+            const Stripe = require('stripe');
+            const stripe1 = Stripe('sk_test_51Lq9pASJJI3Ky1gekqAIaZXAxUfSmmUwC0gJw9PXd3UcbXM9iJnaCTTTtf4geZ5Akk1r5npAIbfhTNf3j9jJL4te00Bp0kKY91');
+
+            const sessions = await stripe.checkout.sessions.list({
+                limit: 3,
+            });
+
+            console.log("test2", sessions)
+
+            const obj = resPattern.successPattern(httpStatus.OK, { result: sessions }, `success`);
+            return res.status(obj.code).json({
+                ...obj,
+            });
+
+        } catch (e) {
+            return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+        }
+    };

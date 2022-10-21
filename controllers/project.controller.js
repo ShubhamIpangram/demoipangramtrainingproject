@@ -18,6 +18,7 @@ const axios = require("axios")
 const orderColl = db.collection("order");
 var cron = require('node-cron');
 
+
 //const lodash = require("lodash");
 const _ = require("underscore");
 const R = require("ramda");
@@ -758,15 +759,26 @@ exports.practiceNodejsModule = async (req, res, next) => {
 exports.practiceMongodbPipeline = async (req, res, next) => {
     try {
 
-
-        cron.schedule('*/2 * * * *', () => {
+        cron.schedule('* * * * *', () => {
             console.log('running a task every two minute');
         });
+
+
 
         const resultData1 = await salaryColl.find({
             $nor: [{ "name": "Shubham Shukla" },
             { "name": "Virat Kohli" }]
         }).toArray();
+
+
+        // const dataRes2 = await salaryColl.findOneAndUpdate({ name: "Shubham Shukla" }, { $inc: { Salary: 10 } });
+
+        const dataRes1 = await salaryColl.findOneAndUpdate(
+            { name: "Shubham Shukla" },
+            { $inc: { Salary: -50 } }
+        )
+
+        console.log('Increment Data', dataRes1)
 
 
         const resultData2 = await salaryColl.find({ "Salary": { $not: { $gte: 20000 } } }).toArray();
