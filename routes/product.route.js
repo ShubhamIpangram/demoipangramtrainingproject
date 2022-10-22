@@ -48,4 +48,6 @@ router.route('/updateFieldsInsideArray')
 router.route('/findDocumentMonthWise')
     .post(productCtrl.findDocumentMonthWise)
 
+router.route('/practiceAggrgationQuery')
+    .post(productCtrl.practiceAggrgationQuery)
 module.exports = router;

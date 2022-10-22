@@ -694,3 +694,33 @@ exports.findDocumentMonthWise = async (req, res, next) => {
     }
 }
 
+
+exports.practiceAggrgationQuery = async (req, res, next) => {
+    try {
+
+        const result = await productColl.aggregate([
+            {
+                $group: {
+                    _id: {
+                        '_id': "$_id",
+                        'product_Name': '$productName'
+                    },
+                    product_count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: {
+                    _id: 1
+                }
+            }
+        ]).toArray();
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}

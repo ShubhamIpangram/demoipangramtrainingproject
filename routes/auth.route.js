@@ -27,4 +27,8 @@ router.route('/nodeCronJob')
 
 router.route('/switchCasejavaScript')
     .post(authCtrl.switchCasejavaScript);
+
+router.route('/practiceJavaScriptFunction')
+    .post(authCtrl.practiceJavaScriptFunction);
+
 module.exports = router;

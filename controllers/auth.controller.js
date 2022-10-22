@@ -391,13 +391,90 @@ exports.importantJavaScriptFunction = async (req, res, next) => {
 
         let message = "Hello Ipangram";
         let name1 = message.toUpperCase();
-
         Log(name1)
-
         Log(person.firstName + "," + person.age + "," + person.city)
 
         const myArray = Object.values(person);
         Log("Object Value: " + myArray)
+
+        let myString = JSON.stringify(person);
+        const arr = ["John", "Peter", "Sally", "Jane"];
+        let myString1 = JSON.stringify(arr);
+
+        Log(myString, myString1)
+
+
+        const person1 = {
+            firstName: "John",
+            lastName: "Doe",
+            language: "en",
+            get lang() {
+                return this.language;
+            }
+        };
+
+
+        Log(person1.lang)
+
+        function Person(first, last, age, eyecolor) {
+            this.firstName = first;
+            this.lastName = last;
+            this.age = age;
+            this.eyeColor = eyecolor;
+            this.nationality = "English";
+        }
+
+        const myFather = new Person("John", "Doe", 50, "blue");
+        const myMother = new Person("Sally", "Rally", 48, "green");
+
+        Log("My firstName is " + myFather.nationality + ". My lastName is " + myMother.nationality)
+
+
+        const letters = new Set(["a", "b", "c"]);
+        Log(letters.size)
+
+        const fruits = new Map([
+            ["apples", 500],
+            ["bananas", 300],
+            ["oranges", 200]
+        ]);
+
+        //fruits.delete("apples");
+
+        // fruits.clear();
+
+        // let text = "";
+        // fruits.forEach(function (value, key) {
+        //     text += key + ' = ' + value
+        // })
+
+        // let text = "";
+        // for (const x of fruits.entries()) {
+        //     text += x ;
+        // }
+
+        // let text = "";
+        // for (const x of fruits.keys()) {
+        //   text += x;
+        // }
+
+        let text = "";
+        for (const x of fruits.values()) {
+            text += x;
+        }
+
+        Log("object Maps", fruits.get("oranges"), fruits.size, fruits.has("apples"), text)
+
+        const person2 = {
+            firstName: "John",
+            lastName: "Doe",
+            language: "EN"
+        };
+
+        // Change a property
+        const personRes = Object.defineProperty(person2, "language", { value: "NO" });
+
+        Log("testres", personRes)
         const obj = resPattern.successPattern(httpStatus.OK, arrayData, `success`);
         return res.status(obj.code).json({
             ...obj,
@@ -510,6 +587,126 @@ exports.switchCasejavaScript = async (req, res, next) => {
         typeof myCar                  // Returns "undefined" *
         typeof null                   // Returns "object"
 
+
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+
+
+exports.practiceJavaScriptFunction = async (req, res, next) => {
+    try {
+        function myFunction(a, b) {
+            return a * b;
+        }
+        let x = myFunction(4, 3);
+
+        function myFunction(a, b) {
+            return a * b;
+        }
+
+        let x1 = myFunction(4, 3) * 2;
+
+
+        function myFunction(a, b) {
+            return a * b;
+        }
+
+        let text = myFunction.toString();
+
+
+        const x3 = (x, y) => { return x * y };
+
+
+
+        function myFunction1(x, y) {
+            if (y === undefined) {
+                y = 2;
+            }
+            return x * y;
+        }
+        console.log("test:---", x, x1, myFunction1(5))
+
+        function findMax() {
+            let max = -Infinity;
+            for (let i = 0; i < arguments.length; i++) {
+                if (arguments[i] > max) {
+                    max = arguments[i];
+                }
+            }
+            return max;
+        }
+        console.log("================================", findMax(430, 355, 439))
+
+        function sumAll() {
+            let sum = 0;
+            for (let i = 0; i < arguments.length; i++) {
+                sum += arguments[i];
+            }
+            return sum;
+        }
+        console.log("================================", sumAll(430, 355, 439))
+
+        function myFunction(a, b) {
+            return a * b;
+        }
+        console.log("================================", myFunction(4, 6))
+
+        const person = {
+            fullName: function () {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+        const person1 = {
+            firstName: "Shubham",
+            lastName: "Shukla"
+        }
+
+        const person2 = {
+            firstName: "Mary",
+            lastName: "Doe"
+        }
+
+        // This will return "John Doe":
+        console.log(person.fullName.call(person1));
+
+        const person23 = {
+            fullName: function () {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+
+        const person5 = {
+            firstName: "Mary",
+            lastName: "Doe"
+        }
+
+        // This will return "Mary Doe":
+        console.log(person23.fullName.apply(person5))
+
+
+        const applyRes = Math.max.apply(null, [1, 2, 3]); // Will also return 3
+        console.log("Apply::-----", applyRes)
+
+
+        const personData = {
+            firstName: "Rohit",
+            lastName: "Sharma",
+            fullName: function () {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+
+        const member = {
+            firstName: "Shubham",
+            lastName: "Shukla",
+        }
+
+        let fullName = personData.fullName.bind(member);
+
+        console.log(fullName())
 
     } catch (e) {
         console.log(e);
