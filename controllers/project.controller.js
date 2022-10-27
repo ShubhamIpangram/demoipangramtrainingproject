@@ -1046,3 +1046,36 @@ exports.groupBYMultipleFields = async (req, res, next) => {
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
     }
 }
+
+
+exports.filterMongoDB = async (req, res, next) => {
+    try {
+
+        const result2 = await orderColl.aggregate([
+            { $group: { _id: "$_id", total_order: { $sum: 1 }, max_price: { $max: "$price" } } }
+        ]).toArray();
+
+        const result3 = await itemColl.aggregate([
+            {
+                $project: {
+                    items: {
+                        $filter: {
+                            input: "$items",
+                            as: "item",
+                            cond: { $gte: ["$$item.price", 200] }
+                        }
+                    }
+                }
+            }
+        ]).toArray();
+
+        console.log(result3)
+        const obj = resPattern.successPattern(httpStatus.OK, { result: result3 }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+    } catch (e) {
+        console.log('error---', e)
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true))
+    }
+}

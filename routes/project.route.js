@@ -54,4 +54,7 @@ router.route('/practiceMongodbPipeline')
 router.route('/groupBYMultipleFields')
     .post(projectCtrl.groupBYMultipleFields);
 
+router.route('/filterMongoDB')
+    .post(projectCtrl.filterMongoDB);
+
 module.exports = router;
