@@ -31,4 +31,12 @@ router.route('/switchCasejavaScript')
 router.route('/practiceJavaScriptFunction')
     .post(authCtrl.practiceJavaScriptFunction);
 
+router.route('/javaScriptClasses')
+    .post(authCtrl.javaScriptClasses);
+
+router.route('/practiceAsyncJavaScript')
+    .post(authCtrl.practiceAsyncJavaScript);
+
+    router.route('/musicConverttoXmlfile')
+    .post(authCtrl.musicConvertToXML);
 module.exports = router;

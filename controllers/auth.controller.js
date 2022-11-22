@@ -14,6 +14,8 @@ const { signInValidation, signUpValidation, emailValidation, resetPasswordValida
 const os = require('os');
 const dns = require('dns');
 const schedule = require('node-schedule');
+const WavDecoder = require("wav-decoder");
+const Pitchfinder = require("pitchfinder");
 
 const privateKey = fs.readFileSync('C:/Windows/System32/drivers/etc/private.key',
     { encoding: 'utf8', flag: 'r' });
@@ -712,4 +714,353 @@ exports.practiceJavaScriptFunction = async (req, res, next) => {
         console.log(e);
         return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
     }
+}
+
+exports.practiceJavaScriptFunction = async (req, res, next) => {
+    try {
+        function myFunction(a, b) {
+            return a * b;
+        }
+        let x = myFunction(4, 3);
+
+        function myFunction(a, b) {
+            return a * b;
+        }
+
+        let x1 = myFunction(4, 3) * 2;
+
+
+        function myFunction(a, b) {
+            return a * b;
+        }
+
+        let text = myFunction.toString();
+
+
+        const x3 = (x, y) => { return x * y };
+
+
+
+        function myFunction1(x, y) {
+            if (y === undefined) {
+                y = 2;
+            }
+            return x * y;
+        }
+        console.log("test:---", x, x1, myFunction1(5))
+
+        function findMax() {
+            let max = -Infinity;
+            for (let i = 0; i < arguments.length; i++) {
+                if (arguments[i] > max) {
+                    max = arguments[i];
+                }
+            }
+            return max;
+        }
+        console.log("================================", findMax(430, 355, 439))
+
+        function sumAll() {
+            let sum = 0;
+            for (let i = 0; i < arguments.length; i++) {
+                sum += arguments[i];
+            }
+            return sum;
+        }
+        console.log("================================", sumAll(430, 355, 439))
+
+        function myFunction(a, b) {
+            return a * b;
+        }
+        console.log("================================", myFunction(4, 6))
+
+        const person = {
+            fullName: function () {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+        const person1 = {
+            firstName: "Shubham",
+            lastName: "Shukla"
+        }
+
+        const person2 = {
+            firstName: "Mary",
+            lastName: "Doe"
+        }
+
+        // This will return "John Doe":
+        console.log(person.fullName.call(person1));
+
+        const person23 = {
+            fullName: function () {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+
+        const person5 = {
+            firstName: "Mary",
+            lastName: "Doe"
+        }
+
+        // This will return "Mary Doe":
+        console.log(person23.fullName.apply(person5))
+
+
+        const applyRes = Math.max.apply(null, [1, 2, 3]); // Will also return 3
+        console.log("Apply::-----", applyRes)
+
+
+        const personData = {
+            firstName: "Rohit",
+            lastName: "Sharma",
+            fullName: function () {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+
+        const member = {
+            firstName: "Shubham",
+            lastName: "Shukla",
+        }
+
+        let fullName = personData.fullName.bind(member);
+
+        console.log(fullName())
+
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+exports.javaScriptClasses = async (req, res, next) => {
+    try {
+        // class Car {
+        //     constructor(name, year) {
+        //         this.name = name;
+        //         this.year = year;
+        //     }
+        // }
+        // const myCar = new Car("Ford", 2014);
+
+        // console.log(myCar.name + " " + myCar.year)
+
+        // class Car {
+        //     constructor(name, year) {
+        //         this.name = name;
+        //         this.year = year;
+        //     }
+        //     age() {
+        //         let date = new Date();
+        //         return date.getFullYear() - this.year;
+        //     }
+        // }
+
+        // let myCar = new Car("Ford", 2020);
+
+        // console.log("My car is " + myCar.age() + " years old.")
+
+
+        // class Car {
+        //     constructor(name, year) {
+        //         this.name = name;
+        //         this.year = year;
+        //     }
+        //     age(x) {
+        //         return x - this.year;
+        //     }
+        // }
+
+        // let date = new Date();
+        // let year = date.getFullYear();
+
+        // let myCar = new Car("Ford", 2014);
+
+        // console.log("My car is " + myCar.age(year) + " years old.")
+        // class Car {
+        //     constructor(name, year) {
+        //         this.name = name;
+        //         this.year = year;
+        //     }
+        //     age(x) {
+        //         return x - this.year;
+        //     }
+        // }
+
+        // let date = new Date();
+        // let year = date.getFullYear();
+
+        // let myCar = new Car("Ford", 2014);
+
+        // console.log("My car is " + myCar.age(year) + " years old.")
+
+        // class Car {
+        //     constructor(brand) {
+        //         this.carname = brand;
+        //     }
+        //     present() {
+        //         return 'I have a ' + this.carname;
+        //     }
+        // }
+        // class Model extends Car {
+        //     constructor(brand, mod) {
+        //         super(brand);
+        //         this.model = mod;
+        //     }
+        //     show() {
+        //         return this.present() + ', it is a ' + this.model;
+        //     }
+        // }
+
+        // let myCar = new Model("Ford", "Mustang");
+        // console.log("inheritance example", myCar.show())
+
+        // class Car {
+        //     constructor(brand) {
+        //         this.carname = brand;
+        //     }
+        //     get cnam() {
+        //         return this.carname;
+        //     }
+        //     set cnam(x) {
+        //         this.carname = x;
+        //     }
+        // }
+
+        // let myCar = new Car("Ford");
+
+        // console.log(myCar.cnam)
+
+        // class Car {
+        //     constructor(name) {
+        //         this.name = name;
+        //     }
+        //     static hello() {
+        //         return "Hello!!";
+        //     }
+        // }
+
+        // let myCar = new Car("Ford");
+
+        // // You can call 'hello()' on the Car Class:
+        // console.log(Car.hello())
+
+
+        class Car {
+            constructor(name) {
+                this.name = name;
+            }
+            static hello(x) {
+                return "Hello " + x.name;
+            }
+        }
+        let myCar = new Car("Ford");
+        console.log(Car.hello(myCar))
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result: myCar }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+
+exports.practiceAsyncJavaScript = async (req, res, next) => {
+    try {
+
+        // function myDisplayer(some) {
+        //     console.log(some)
+        // }
+        // function myFirst() {
+        //     myDisplayer("Hello");
+        // }
+
+        // function mySecond() {
+        //     myDisplayer("Goodbye");
+        // }
+
+        // myFirst();
+        // mySecond();
+
+        // function myDisplayer(some) {
+        //     console.log(some)
+        // }
+
+        // function myCalculator(num1, num2) {
+        //     let sum = num1 + num2;
+        //     return sum;
+        // }
+
+        // let result = myCalculator(5, 5);
+        // myDisplayer(result);
+
+        // function myDisplayer(some) {
+        //     console.log(some)
+        // }
+
+        // function myCalculator(num1, num2) {
+        //     let sum = num1 + num2;
+        //     myDisplayer(sum);
+        // }
+
+        // myCalculator(5, 5);
+
+        // setInterval(myFunction, 1000);
+
+        // function myFunction() {
+        //     let d = new Date();
+        //     console.log(
+        //         d.getHours() + ":" +
+        //         d.getMinutes() + ":" +
+        //         d.getSeconds())
+        // }
+
+        function myDisplayer(some) {
+            console.log(some)
+        }
+
+        let myPromise = new Promise(function (myResolve, myReject) {
+            let x = 0;
+
+            // some code (try to change x to 5)
+
+            if (x == 0) {
+                myResolve("OK");
+            } else {
+                myReject("Error");
+            }
+        });
+
+        myPromise.then(
+            function (value) { myDisplayer(value); },
+            function (error) { myDisplayer(error); }
+        );
+
+        const obj = resPattern.successPattern(httpStatus.OK, { result: myCar }, `success`);
+        return res.status(obj.code).json({
+            ...obj,
+        });
+
+    } catch (e) {
+        console.log(e);
+        return next(new APIError(`${e.message}`, httpStatus.BAD_REQUEST, true));
+    }
+}
+
+exports.musicConvertToXML = async (req, res, next) => {
+
+    // // see below for optional configuration parameters.
+    // const detectPitch = Pitchfinder.YIN();
+
+    // const buffer = fs.readFileSync('C:/Users/hp/Downloads');
+    // console.log(buffer)
+    // const decoded = WavDecoder.decode.sync(buffer); // get audio data from file using `wav-decoder`
+    // console.log(decoded)
+    // const float32Array = decoded.channelData[0]; // get a single channel of sound
+    // const pitch = detectPitch(float32Array);
 }
